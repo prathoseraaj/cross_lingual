@@ -1,0 +1,39 @@
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python bytecode and tooling caches
+__pycache__/
+*.py[cod]
+*$py.class
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Jupyter temporary files and checkpoints
+.ipynb_checkpoints/
+
+# Fine-tuning outputs and model checkpoints
+tanglish_gemma2b_adapter/
+tanglish_gemma2b_lora_checkpoints/
+checkpoints/
+outputs/
+wandb/
+
+# Logs and local run artifacts
+*.log
+logs/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+
+# IDE and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
