@@ -1,0 +1,15 @@
+\begin{table}
+\caption{Sub-token fertility (tokens/word).}
+\label{tab:fertility}
+\begin{tabular}{lrrrr}
+\toprule
+tokenizer & gemma-2b & gpt2 & qwen2.5-0.5b & xlm-roberta \\
+text_type &  &  &  &  \\
+\midrule
+English instructions (not parallel) & 1.250000 & 1.320000 & 1.250000 & 1.480000 \\
+Tanglish outputs: all words & 2.140000 & 2.360000 & 2.170000 & 2.330000 \\
+Tanglish outputs: backticked terms & 1.800000 & 1.910000 & 1.720000 & 2.210000 \\
+Tanglish outputs: non-backtick words & 2.250000 & 2.580000 & 2.310000 & 2.250000 \\
+\bottomrule
+\end{tabular}
+\end{table}
