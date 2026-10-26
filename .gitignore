@@ -37,3 +37,11 @@ logs/
 .idea/
 .DS_Store
 Thumbs.db
+
+tanglish_gemma2b_lora_checkpoints/
+*.safetensors
+*.bin
+__pycache__/
+.ipynb_checkpoints/
+results/rubric_key_DONT_OPEN.csv
+data/
