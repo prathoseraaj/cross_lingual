@@ -1,0 +1,615 @@
+item_id,val_idx,prompt,reference,output,correctness_1to3,tanglish_ok_0or1,notes
+0,50,"<start_of_turn>user
+How does the useState hook work in React?
+
+Context:
+const [count, setCount] = useState(0);
+<button onClick={() => setCount(count + 1)}>{count}</button><end_of_turn>
+<start_of_turn>model
+","`useState(0)` oru array return pannum: current `state` value (`count`) and adha update panra function (`setCount`). `0` dhaan initial value. `setCount` call pannumbodhu React component-a `re-render` pannum, pudhu `count` value-oda. Direct-a `count = count + 1` nu mathina React-ku theriyaadhu, UI update aagaadhu. Previous value-a depend panna `setCount(prev => prev + 1)` nu functional update use panradhu safe. State update `asynchronous`-a batch aagum, so `setCount` kazhichi udane `count` print panna pazhaya value dhaan varum.","`useState` oru function, `count` and `setCount` irukku. `useState`-la `[]` irundha, default value return aagum, `count + 1` add aagura state-a return pannum. `[]` illa-na `count` and `setCount`-a return pannum, `count + 1` add aagum. `useState`-la `callback` or `setState`-a mattum return pannanum, so `onClick={() => setCount(count + 1)}` vechi count add aagaadhu. `useState`-la `callback` return pannaa state-a `mutable`-a maathina, `setState`-la `immutable`-a maathina, so `count + 1` mattum add aagum. `useReducer` or `useCallback`-ku nalla use illa. `useState` `side effect free",,,
+1,41,"<start_of_turn>user
+What is Exponential Search and when do you use it?<end_of_turn>
+<start_of_turn>model
+","`Exponential Search` oru sorted array-la, size theriyaadha or romba periya array-la target-a find panna use aagum. Mudhalla index `1, 2, 4, 8, 16...` nu double pannitte pogi, `arr[i] >= target` aagura range-a kandupidippom. Appuram andha range-kulla `Binary Search` pannuvom. Time `O(log n)`. Target array-oda start-ku kitta irundha `Binary Search`-a vida fast. Infinite or unbounded sorted data-la search panna idhu nalla option.","Sure, here's the explanation of Exponential Search:
+
+**Exponential search** is a search algorithm that uses a **multiplier** to exponentially increase the number of possible results as the search space is explored. This technique helps to overcome limitations of traditional search algorithms, which typically rely on linear search or binary search.
+
+**When to use exponential search:**
+
+* When the search space is vast and the number of relevant results is very high.
+* When the search query is complex or ambiguous.
+* When the data is distributed across multiple servers.
+
+**Example:**
+
+Consider a directory with 100,000 files. A traditional search might explore each file sequentially, resulting in a search time of O(n). However, using exponential search, the algorithm could start with a multiplier of 10 and explore the files in the order they appear in the directory. This could significantly reduce the search time to O(log n).
+
+**Note:** Exponential search can be computationally",,,
+2,55,"<start_of_turn>user
+How should passwords be stored securely in a database?
+
+Context:
+const hash = await bcrypt.hash(password, 10);
+const ok = await bcrypt.compare(input, hash);<end_of_turn>
+<start_of_turn>model
+","Passwords-a eppavum `plain text`-la store pannakoodadhu, database leak aana ellaarum password-um poidum. `Hashing` use pannanum, adhavadhu one-way function, hash-la irundhu password-a thirumba edukka mudiyaadhu. `MD5` or `SHA-256` maadhiri fast hashes-ku bad idea, attackers seconds-la billions try pannuvaanga. `bcrypt`, `argon2`, `scrypt` maadhiri slow hashes use pannanum. Ungal code-la `10` dhaan `salt rounds`, adhu adhigam aanaa slow-a aagum. `Salt` ovvoru password-kum random-a add aagum, so same password-ku different hash varum, `rainbow table` attack work aagaadhu. Login-la `compare` use pannuvom.","`bcrypt` oru `PBKDF2` (`PBKDF` = Password-Based Key Derivation Function) algorithm use pannum, `salt` and `iterations` vachi password-a hash pannum. Password-a `sha2` vachi encrypt pannuvom, `salt` and `iterations` vechi hash-a encrypt pannuvom. Database-la `password` field-a `sha2` vachi store pannuvom, `bcrypt` vechi encrypt pannuvom. Password-a `input` vechi `bcrypt.compare()` use pannalaam, `bcrypt` salt and iterations vechi hash-a compare pannuvom. Password-a `salt` and `iterations` vechi store pannanum, `bcrypt` vechi encrypt pannanum. Password-a `salt` and `iterations` vechi encrypt panni, `bcrypt` vechi compare pannanum. Password-a `salt` and `iterations` vechi encrypt panni, `bcrypt`",,,
+3,44,"<start_of_turn>user
+How do Kafka partitions and consumer groups work?<end_of_turn>
+<start_of_turn>model
+","Kafka `topic` neraiya `partitions`-a split aagirukkum, ovvoru partition oru ordered, append-only log. Producer message-a `key` hash vachi partition-ku anuppum, same key eppavum same partition-ku pogum, adhunaala per-key ordering kedaikkum. `Consumer group`-la neraiya consumers irundha, ovvoru partition-um group-la oru consumer-ku mattum assign aagum, so parallel processing. Consumers count partitions-a vida adhigam-na extra consumers idle. Ovvoru consumer `offset` (evlo padichaachu)-a track pannum. Partitions count scalability decide pannum.","`Kafka` partitions-a `equally` distribute pannum, adhunaala `100%` equal-a irundha `partition skew` problem. `Consumer group`-la irundhu ovvoru consumer-um same partition-ku irundhaalum subscribe aagum, `load balance` aagum. Ungal example-la `10` consumer-um `10 partitions`-ku subscribe aagudhu, `5` consumer-ku `5` partitions. `Partition skew` irundha, `load` kammi aagum nu theriyum. Consumer group-ku `rebalance` dhaan nadakkum, `rebalance time` irukkura factors: `load`, `partition skew`, `network latency`. `Kafka Streams`-la automatic-a rebalance aagum (`auto.rebalance`). `Zookeeper`-la `group.id` and `zookeeper.z",,,
+4,10,"<start_of_turn>user
+How do you remove the Nth node from the end of a linked list?<end_of_turn>
+<start_of_turn>model
+","Two pointers use pannuvom. Mudhalla `fast` pointer-a `n` steps munnadi anuppuvom. Appuram `slow` and `fast` rendum sync-a oru oru step move pannuvom, `fast` last node-a reach pannura varaikkum. Appo `slow` delete panna vendiya node-oda `previous` node-la irukkum, so `slow.next = slow.next.next` pannaa pothum. Head-a delete panna vendiya case-ku `dummy` node use pannuvom. Time `O(n)`, only one pass, space `O(1)`.","`O(n)`, `O(1)` extra space-la. `n` nodes-ku `n - 1` pointers-a keep pannuvom. `i = n - 1`, `i`-ku `next`-a visit pannuvom, `i` maara-na `i--` pannuvom (last node-ku `i = 0`). Ovvoru node-kum `next` pointer-a `i` update pannuvom (`i = i - 1`). Idhu `reverse`-ku use aagum. Time `O(n)` because `i` loop-la move aagum, `n`-la irundhu irundhu update aagum (`i--`). Idhu common interview question.7",,,
+5,50,"<start_of_turn>user
+How does the useState hook work in React?
+
+Context:
+const [count, setCount] = useState(0);
+<button onClick={() => setCount(count + 1)}>{count}</button><end_of_turn>
+<start_of_turn>model
+","`useState(0)` oru array return pannum: current `state` value (`count`) and adha update panra function (`setCount`). `0` dhaan initial value. `setCount` call pannumbodhu React component-a `re-render` pannum, pudhu `count` value-oda. Direct-a `count = count + 1` nu mathina React-ku theriyaadhu, UI update aagaadhu. Previous value-a depend panna `setCount(prev => prev + 1)` nu functional update use panradhu safe. State update `asynchronous`-a batch aagum, so `setCount` kazhichi udane `count` print panna pazhaya value dhaan varum.","`useState` oru function, `count` and `setCount` irukku. `useState`-la `[]` irundha, default value return aagum, `count + 2` nu set panna `[count + 0, setCount(c => c + 2)]` nu call pannum. `[]` illa-na `[count, setcount]`. `useState` or ulagalaam, `setState`-oda `callback`-a irukkum, `async` work-ku use aagum. `useRef` oru variable-a `immutable`-a store pannalaam, `useCallback` oru callback-a `memoized`-a recompute pannum. Idhu React-oda core principle. `useReducer` and `useMemo`-um complex logic-ku use pannalaam.",,,
+6,24,"<start_of_turn>user
+What are database migrations?<end_of_turn>
+<start_of_turn>model
+","`Migration` na database `schema` changes-a (table create, column add, index add) code-a version-controlled files-a manage pannuradhu. Ovvoru migration-kum `up` (apply) and `down` (rollback) irukkum. Tools: `Flyway`, `Liquibase`, `Prisma Migrate`, `Django migrations`, `Knex`. Benefits: team-la ellaa developers-um, dev, staging, production ellaa environments-layum same schema-va maintain pannalaam. Production-la migrations-a run pannum bodhu `downtime` and `locking` pathi careful-a irukkanum.","`Migrations` oru database schema-a oru time-la (or multiple times) update panna, `schema-breaking` changes-a avoid pannum. Example: `users` table-a add panna, `users_id` column rename panna, `user_id` -> `user_uid` maathalaam. Migrations-la `rollback` easy, because changes-a `undo` panna koodaadhu. Migrations `IDE` support illa, so manual-a run pannanum. `sequelize-migrate` popular tool. `migrations-table` and `version` column irukku. `sequelize.migrate(true, { steps: ['db/migrations'] })` use pannuvom. `sequelize:version` CLI command vechi version check pannalaam.",,,
+7,35,"<start_of_turn>user
+What is a multi-stage build in Docker?
+
+Context:
+FROM node:20 AS build
+WORKDIR /app
+COPY . .
+RUN npm ci && npm run build
+
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html<end_of_turn>
+<start_of_turn>model
+","`Multi-stage build`-la oru `Dockerfile`-la multiple `FROM` stages irukkum. Mudhal stage-la (`build`) full Node.js, dev dependencies vachi app-a build pannuvom. Rendaavadhu stage-la (`nginx:alpine`) chinna final image-la, `COPY --from=build` vachi build output mattum copy pannuvom. Final image-la build tools, source code, `node_modules` illa, so size romba kammi (`1GB` -> `30MB`), attack surface kammi, secure. Compiled languages (Go, Java)-ku-um romba useful.","`Multi-stage build` in Docker is a process-a build-a multiple steps, each one with its own `Dockerfile` or `docker-compose.yml` file. These steps can be executed in a specific order, and the final image or container is built at the end.
+
+First, a base image is built from the `node:20` image. This image contains the Node.js runtime and other dependencies needed to build and run the application.
+
+Next, the application code is built from the same `node:20` image. This step copies the application code, dependencies, and other assets into the container.
+
+Finally, the `nginx:alpine` image is built from the `nginx:alpine` image. This image contains the Nginx web server, which will serve the application.
+
+The `docker-compose.yml` file defines the build and deployment process. It specifies the order of the steps, the base image, the application image",,,
+8,38,"<start_of_turn>user
+Why does var in a for loop with setTimeout print the same value, and how do you fix it?
+
+Context:
+for (var i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 100);
+}<end_of_turn>
+<start_of_turn>model
+","`var` `function-scoped`, so loop-ku oru `i` variable dhaan irukkum. `setTimeout` callbacks 100ms appuram run aagum bodhu, loop mudinju `i = 3` aagirukkum, adhunaala `3, 3, 3` print aagum. Fix pannuradhu rendu ways: `var`-a `let` aa maathunaa, `let` `block-scoped` so ovvoru iteration-kum pudhu `i` create aagum (`0, 1, 2`). Illana `IIFE` use panni `i`-a ovvoru vaatiyum capture pannalaam. Closure and scope-a purinjikka idhu oru classic example.","`var` hoist aagura, `i` declaration-a mattum mattum run aagum, so `i` always `0` dhaan. Fix: `let` use pannuvom, or `const i = 0` declare pannuvom. `let` or `const`-la irundha, `i`-a reassign pannaama, `var`-la reassign pannaama. `let` and `const`-oda `block scope` irukku, `var` `function scope` irukku. `const`-la irundha `i`-a reassign panna `ReferenceError` varum. `let`-la irundha `i`-a reassign panna `i`-a mattum mattum run aagum. `const`-la irundha `i`-a reassign panna `ReferenceError` varum. `var`-la i",,,
+9,3,"<start_of_turn>user
+How do you find the intersection node of two linked lists?
+
+Context:
+function getIntersectionNode(a, b) {
+  let p = a, q = b;
+  while (p !== q) {
+    p = p ? p.next : b;
+    q = q ? q.next : a;
+  }
+  return p;
+}<end_of_turn>
+<start_of_turn>model
+","Rendu linked lists oru node-la merge aagi, appuram same-a continue aagum. Two pointers `p` and `q` vachi: `p` list `a`-la, `q` list `b`-la start aagum. Oru pointer end-a reach panna, adha vera list-oda head-ku maathidvom. Rendu pointers-um `lenA + lenB` steps-a total-a travel pannum bodhu, same distance-la intersection-la meet aagum. Intersection illa-na rendume `null`-la meet aagi `null` return aagum. Time `O(m + n)`, space `O(1)`.","Ovvoru list-layum `head`-a compare pannuvom. `p` and `q` rendum meet aagura nodes-a `meet node` nu mark pannuvom, adhu `head` aana meet aagala-na `p` or `q` `head` dhaan. `p == q` na `head` illa, so `p`-oda next-a `q`-oda head-ku pogum. Time `O(m + n)`, space `O(1)`. `m` and `n` list lengths. `p.next === q.next` na `p === q` nu check pannanum. `p === null` illa-na `Infinity` dhaan meet node. `p = p.next` nu `p === Infinity` na meet node illa. `p !== Infinity` na `Infinity` meet node. Idhu `Floyd's cycle detection",,,
+10,52,"<start_of_turn>user
+How do you find the Kth smallest element in a BST?
+
+Context:
+function kthSmallest(root, k) {
+  const stack = [];
+  let cur = root;
+  while (cur || stack.length) {
+    while (cur) { stack.push(cur); cur = cur.left; }
+    cur = stack.pop();
+    if (--k === 0) return cur.val;
+    cur = cur.right;
+  }
+}<end_of_turn>
+<start_of_turn>model
+","BST-oda `inorder traversal` eppavum values-a sorted order-la tharum, so `k`-th element-a visit pannum bodhu stop pannidalaam. Ungal code iterative inorder: left-ku poitte `stack`-la push pannuvom, appuram pop panni visit pannuvom, `k` zero aana adhu dhaan answer, illana `right` subtree-ku pogum. Full traversal panna thevai illa, so time `O(h + k)`. Tree-ku frequent insert/delete irundha, ovvoru node-layum `subtree size` store pannaa `O(h)`-la answer kedaikkum.","BST-la `K`-ku rendu smallest element-a kandupidikkum, so `K` elements-a stack-la store pannuvom. `cur` current node, `stack.length` stack-la irundhu irukkura elements count. Left-la irundhu `cur.left`-a pogum, right-la irundhu `cur.right`-a pogum. `K` vandha stack-la irundhu irukkura element `Kth smallest` dhaan. Time `O(n)`, space `O(n)`. `K`-ku rendu smallest-a kandupidikkura BST-a `heap` use pannalaam. `K`-ku rendu largest-a kandupidikkura BST-a `binary heap` use pannalaam. `K`-ku rendu smallest/largest-a kandupidikkura BST-a `AVL",,,
+11,38,"<start_of_turn>user
+Why does var in a for loop with setTimeout print the same value, and how do you fix it?
+
+Context:
+for (var i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 100);
+}<end_of_turn>
+<start_of_turn>model
+","`var` `function-scoped`, so loop-ku oru `i` variable dhaan irukkum. `setTimeout` callbacks 100ms appuram run aagum bodhu, loop mudinju `i = 3` aagirukkum, adhunaala `3, 3, 3` print aagum. Fix pannuradhu rendu ways: `var`-a `let` aa maathunaa, `let` `block-scoped` so ovvoru iteration-kum pudhu `i` create aagum (`0, 1, 2`). Illana `IIFE` use panni `i`-a ovvoru vaatiyum capture pannalaam. Closure and scope-a purinjikka idhu oru classic example.","`var` hoist aagura, `i` declaration-a mattum mattum run aagum, so `i` always `0` dhaan. Fix: `let` use pannuvom, or `const i = 1` declare panni `i`-a use pannuvum. `var` hoist-la `block scope`-la irundhu irukkum, `let` and `const` `block scope-a` irukku, global scope-la irukkura nala block scope-la work aagum. `const`-la declaration-um irukkalaam, `let/var`-la `reassignment` panna `let` or `const` use pannanum. `const i` use panna `i = 1;` dhaan safe. `let`-la idhu mattum safe. `var i`-la assign pannaa `i` re-",,,
+12,21,"<start_of_turn>user
+What is the Master Theorem for solving recurrence relations?<end_of_turn>
+<start_of_turn>model
+","Divide and conquer algorithms-oda time complexity `T(n) = a * T(n/b) + f(n)` maadhiri recurrence-a varum. `a` subproblems count, `b` size reduction factor, `f(n)` divide and combine cost. `Master Theorem` `n^(log_b a)`-a `f(n)`-oda compare pannum: `f(n)` chinna-na `T(n) = Theta(n^(log_b a))`, rendum same-na `Theta(n^(log_b a) * log n)`, `f(n)` periya-na `Theta(f(n))`. Example: `Merge Sort` `T(n) = 2T(n/2) + n` -> `Theta(n log n)`. `Binary Search` `T(n) = T(n/2) + 1` -> `Theta(log n)`.",I can't give a direct answer to this question from the context. The context does not provide any information about the Master Theorem for solving recurrence relations.,,,
+13,40,"<start_of_turn>user
+What is a Fenwick Tree (Binary Indexed Tree)?<end_of_turn>
+<start_of_turn>model
+","`Fenwick Tree` prefix sum-a efficient-a maintain panna use aagura chinna data structure. Idhu oru simple array dhaan, aana ovvoru index-um oru specific range-oda sum-a store pannum, index-oda `last set bit` vachi range decide aagum (`i & -i`). `update` and `prefix query` rendume `O(log n)`. `Segment Tree`-a vida code short-a irukkum, memory-um kammi. Aana sum maadhiri invertible operations-ku dhaan easy, min/max-ku suit aagaadhu.","`Fenwick Tree` oru binary search tree, ovvoru index `i`-kum `[0, i]` range-a binary search panna, ovvoruthu range-oda sum-a calculate panna use aagum. Ovvoru index-kum `Fenwick[i]` array-la store pannuvom. `Fenwick(0, n)`-la irundhu ellaa indices-aiyum `0`-ku update panni, `Fenwick[(0, n)]`-la irukkura range-oda `sum` calculate pannalaam. Range sum-a `Fenwick`-la calculate panna `O(log n)`. Range update-a `O(1)`. Idhu `bitmasking`-oda special case. `Fennel` framework-la idhu dhaan use aagudhu.",,,
+14,44,"<start_of_turn>user
+How do Kafka partitions and consumer groups work?<end_of_turn>
+<start_of_turn>model
+","Kafka `topic` neraiya `partitions`-a split aagirukkum, ovvoru partition oru ordered, append-only log. Producer message-a `key` hash vachi partition-ku anuppum, same key eppavum same partition-ku pogum, adhunaala per-key ordering kedaikkum. `Consumer group`-la neraiya consumers irundha, ovvoru partition-um group-la oru consumer-ku mattum assign aagum, so parallel processing. Consumers count partitions-a vida adhigam-na extra consumers idle. Ovvoru consumer `offset` (evlo padichaachu)-a track pannum. Partitions count scalability decide pannum.","`Kafka` partitions-a `equally` distribute pannum, adhunaala `100%` equal-a irundha `partition skew` problem. `Consumer group`-la irundhu ovvoru consumer-um same partition-ku irundhaalum subscribe aagum, `load balance` aagum. Ungal example-la `100` consumers-ku `10` partitions irukku, so `1000` concurrent requests-ku `10%` skew. Consumer group-la `rebalance` aagum, adhunaala skew kammi aagum. `Partition assignment` and `load balancing`-ku `zookeeper` use pannum. `Kafka Streams` and `KSQL` automatic-a consumer groups create pannum. `Kafka Connect` data-va `source` table-ku automatic-a consumer groups create pannum. `Kafka Streams`-la `consumer.",,,
+15,24,"<start_of_turn>user
+What are database migrations?<end_of_turn>
+<start_of_turn>model
+","`Migration` na database `schema` changes-a (table create, column add, index add) code-a version-controlled files-a manage pannuradhu. Ovvoru migration-kum `up` (apply) and `down` (rollback) irukkum. Tools: `Flyway`, `Liquibase`, `Prisma Migrate`, `Django migrations`, `Knex`. Benefits: team-la ellaa developers-um, dev, staging, production ellaa environments-layum same schema-va maintain pannalaam. Production-la migrations-a run pannum bodhu `downtime` and `locking` pathi careful-a irukkanum.","Database migrations are a set of steps or commands that are executed in a specific order to ensure the database schema stays in sync with the current requirements. These migrations can be used to add new columns, remove old ones, alter data types, and perform other changes to the database schema.
+
+Migrations can be manually written and executed, or they can be generated automatically by a database migration tool. When a migration is executed, it is typically run in the context of a database connection. The database connection is opened, the changes are made to the database schema, and the changes are then committed to the database.
+
+Migrations can be used to improve the performance of a database, to fix data integrity issues, or to implement new features. They can also be used to protect the database from unauthorized access or modification.",,,
+16,42,"<start_of_turn>user
+How does the Horizontal Pod Autoscaler work in Kubernetes?
+
+Context:
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+spec:
+  scaleTargetRef: { kind: Deployment, name: web }
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource: { name: cpu, target: { type: Utilization, averageUtilization: 70 } }<end_of_turn>
+<start_of_turn>model
+","`HPA` Pods-oda `replica count`-a load base-la automatic-a increase/decrease pannum. Metrics server-la irundhu CPU, memory (or custom metrics) paarthu, target (`70%` CPU) maintain panna replicas-a calculate pannum: `desired = current * (currentMetric / target)`. `minReplicas` and `maxReplicas` limits. Pods-ku `resource requests` define pannirukkanum, illana utilization calculate aagaadhu. `Cluster Autoscaler` nodes-a add pannum, `VPA` Pod-oda resources-a vertical-a adjust pannum. Cooldown periods flapping-a thadukkum.","`Horizontal Pod Autoscaler` (HPA) ovvoru pod-kum automatic-a scale pannum. `scaleTargetRef` pod-oda `Deployment` reference, `minReplicas`, `maxReplicas`, `metrics` (CPU utilization) settings irukkura options irukku. `minReplicas` and `maxReplicas` pod-kum maximum-a irukkum. `averageUtilization` metric-oda average-a calculate pannum, `targetUtilization`-a irundha scale aagum. `targetUtilization < 70` na `minReplicas + 1`-ku increase, `70 < targetUtilization < 80` na same, `80 < target Utilization` na `maxReplicas`. `targetUtilization > 100`-ku automatic-a `maxReplicas - 1` aagum, adhunaala pod crash aagaadhu. `CPU utilization` metric-a `Utilization`",,,
+17,26,"<start_of_turn>user
+What is the difference between offset pagination and cursor pagination?
+
+Context:
+SELECT * FROM posts ORDER BY id LIMIT 10 OFFSET 20;
+SELECT * FROM posts WHERE id > 30 ORDER BY id LIMIT 10;<end_of_turn>
+<start_of_turn>model
+","`Offset pagination`-la `LIMIT` and `OFFSET` use pannuvom, `page 3` venum-na `OFFSET 20`. Simple, aana `OFFSET` periya-a aana database first 1 million rows-a skip panna kooda scan pannum, so slow. Rendavadhu, user page paarkkumbodhu pudhu rows insert aanaa duplicates or missing items varum. `Cursor pagination`-la last paartha item-oda `id` (cursor) vechi `WHERE id > 30` nu next page edukkuvom, index use aagum so romba fast, results-um stable. Aana random page-ku jump panna mudiyaadhu. Infinite scroll feeds-ku cursor, admin tables-ku offset.","`Offset pagination`-la ovvoru page-kum `LIMIT 10` rows kudukkum, ovvoru row-kum `id` vechi offset calculate panni, adha `OFFSET 20` nu thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba thirumba",,,
+18,60,"<start_of_turn>user
+What is event bubbling and event delegation?
+
+Context:
+document.querySelector('ul').addEventListener('click', (e) => {
+  if (e.target.tagName === 'LI') console.log(e.target.textContent);
+});<end_of_turn>
+<start_of_turn>model
+","`Event bubbling` na oru child element-la event nadandha, adhu parent, grandparent nu DOM tree-la mela `bubble up` aagum. Idhunaala parent-la irukkura listener-um trigger aagum. `Event delegation` na idha use panni, ovvoru child-kum thani listener podaama parent-la oru listener mattum podradhu. Ungal code-la `ul`-la oru listener dhaan irukku, `e.target` vechi edha click pannaanga nu theriyum. Dynamic-a add aagura `li` elements-kum automatically work aagum, memory-um save aagum. Bubbling-a niruthanum-na `e.stopPropagation()` use pannalaam.","`Event bubbling` is when a event triggered on a parent element is also triggered on all child elements. `Event delegation` is when a single event listener is assigned to multiple elements, and the event is propagated to all child elements.
+
+In the example, when the user clicks on an item in the list, the click event is first triggered on the `ul` element. Since the `ul` element has the event listener, the click event is also triggered on the child `li` element.",,,
+19,2,"<start_of_turn>user
+What is the difference between git pull and git fetch?
+
+Context:
+git fetch origin
+git pull origin main<end_of_turn>
+<start_of_turn>model
+","`git fetch` remote repository-la irundhu pudhu commits, branches-a download pannum, aana ungal `working directory` and local branch-a maathaadhu, safe. Remote enna maariruku nu paathitu decide pannalaam (`git diff origin/main`). `git pull` = `git fetch` + `git merge` (or `rebase` with `--rebase`), adhavadhu download panni udane local branch-la merge-um pannidum. Conflicts varalaam. Safe-a work panna mudhalla `fetch` panni check pannitu appuram merge pannuradhu nalla habit.","`git pull` oru command, `git fetch` mattum oru step. `git fetch origin` oru repo-oda `remote-tracking branch names`-a (like `origin/main`) sync pannum, `origin/` illa-na `fetch` aagum. `git pull origin` illa-nu `fetch` pannum, so `origin/master`-a sync aagum, `main`-a mattum thirumba thirumba thirudalaam. `git merge origin/main` oru `merge request` create pannum. `fetch` mattum-na `pull` pannanum. `git rebase origin/main`, `git merge --ff-use origin/main`. `git fetch --prune` ellaa `origin/..` names-a remove pannum.",,,
+20,47,"<start_of_turn>user
+How do you solve the Climbing Stairs problem?<end_of_turn>
+<start_of_turn>model
+","`n` steps irukkum bodhu, oru time-la 1 or 2 steps eri vara mudiyum, evlo ways-nu kekkuradhu. `n`-th step-ku vara last move 1 step (`n-1`-la irundhu) or 2 steps (`n-2`-la irundhu) aagum. So `ways(n) = ways(n-1) + ways(n-2)`, idhu `Fibonacci` pattern dhaan. Recursion-la direct-a pota `O(2^n)`, `memoization` or bottom-up DP use panna `O(n)`. Last-2 values mattum vachaa space `O(1)`-ku kondu vandhidalaam.","`DP`-la `dp[i]` na `i` stairs-la reach panna mudiyura minimum steps count. `dp[0] = 0`. `dp[1] = 1`, because `1` step-la reach aagalaam. `dp[-1] = -1`, because negative number-a stairs-la represent panna mudiyaadhu. `dp` array-a `0`-la start panni, `-1`-la end-ku fill pannuvom. Time `O(n)`, space `O(1)`. Idhu `Fibonacci DP`-oda special case. `dp = [1, 2, -1, -1]`. Idhu recursion-la `O(2^n)` space-la varum. `DP` recursion-la space `O((n + 1) * n)` aagum, so `O(log n)` space-",,,
+21,60,"<start_of_turn>user
+What is event bubbling and event delegation?
+
+Context:
+document.querySelector('ul').addEventListener('click', (e) => {
+  if (e.target.tagName === 'LI') console.log(e.target.textContent);
+});<end_of_turn>
+<start_of_turn>model
+","`Event bubbling` na oru child element-la event nadandha, adhu parent, grandparent nu DOM tree-la mela `bubble up` aagum. Idhunaala parent-la irukkura listener-um trigger aagum. `Event delegation` na idha use panni, ovvoru child-kum thani listener podaama parent-la oru listener mattum podradhu. Ungal code-la `ul`-la oru listener dhaan irukku, `e.target` vechi edha click pannaanga nu theriyum. Dynamic-a add aagura `li` elements-kum automatically work aagum, memory-um save aagum. Bubbling-a niruthanum-na `e.stopPropagation()` use pannalaam.","`Event bubbling` na `parent` element-la irundhu `child` element-ku event-a anuppum. Ungal code-la `document.querySelector` `ul`-a click pannitu `ul` child-ku anuppum, so `e.target` `LI`-a irundhaalum. `Event delegation` na `document`-la `addEventListener` panni, `li`-ku direct-a anuppaadhu, parent-ku `event.stopPropagation()` illaama `li` child-kulla irukkum. Ungala code-la parent-ku anuppaadha `stopPropagation()` illa-na `li` click pannum. Idhu `DOM traversal` (child-oda parent-ku) and `performance` (multiple levels-la add pannanum) problems-a vida nalla. Event delegation-ku `closest` selector use pannuvaanga. Event bubbling-ku `querySelector",,,
+22,54,"<start_of_turn>user
+What is the Builder pattern?
+
+Context:
+const req = new RequestBuilder()
+  .url('/api/users')
+  .method('POST')
+  .header('Auth', 'token')
+  .body({ name: 'Raj' })
+  .build();<end_of_turn>
+<start_of_turn>model
+","Neraiya optional parameters irukkura complex object create panna constructor-la 10 arguments pass pannuradhu `telescoping constructor` problem, order marandhuduvom. `Builder pattern`-la step by step `method chaining` vachi fields-a set pannitu, kadaisiya `build()` call panna final object kedaikkum. Code readable-a irukkum, immutable objects create panna easy, validation `build()`-la panna mudiyum. Java-la `StringBuilder`, Lombok `@Builder`, query builders (`Knex`, `SQLAlchemy`) idhoda examples.","`Builder` oru object-a aathu function-a build pannakkum. `RequestBuilder` object-a URL, method, headers, and body-a build pannakkum. `Builder` pattern-a object-a build pannakkum, aathu function-a execute pannakkum.",,,
+23,10,"<start_of_turn>user
+How do you remove the Nth node from the end of a linked list?<end_of_turn>
+<start_of_turn>model
+","Two pointers use pannuvom. Mudhalla `fast` pointer-a `n` steps munnadi anuppuvom. Appuram `slow` and `fast` rendum sync-a oru oru step move pannuvom, `fast` last node-a reach pannura varaikkum. Appo `slow` delete panna vendiya node-oda `previous` node-la irukkum, so `slow.next = slow.next.next` pannaa pothum. Head-a delete panna vendiya case-ku `dummy` node use pannuvom. Time `O(n)`, only one pass, space `O(1)`.","```python
+def remove_nth_from_end(head, n):
+  """"""
+  Remove the Nth node from the end of a linked list.
+
+  Args:
+    head: The head of the linked list.
+    n: The index of the node to remove.
+
+  Returns:
+    The head of the modified linked list.
+  """"""
+
+  # Initialize two pointers, one at the head and one at the Nth node from the end.
+  prev = head
+  for _ in range(n):
+    prev = prev.next
+
+  # Set the next pointer of the Nth node to the next node.
+  prev.next = head.next
+  # Set the next pointer of the head node to the next node.
+  head.next = head.next.next
+  # Return the modified head.
+  return head
+```",,,
+24,42,"<start_of_turn>user
+How does the Horizontal Pod Autoscaler work in Kubernetes?
+
+Context:
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+spec:
+  scaleTargetRef: { kind: Deployment, name: web }
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource: { name: cpu, target: { type: Utilization, averageUtilization: 70 } }<end_of_turn>
+<start_of_turn>model
+","`HPA` Pods-oda `replica count`-a load base-la automatic-a increase/decrease pannum. Metrics server-la irundhu CPU, memory (or custom metrics) paarthu, target (`70%` CPU) maintain panna replicas-a calculate pannum: `desired = current * (currentMetric / target)`. `minReplicas` and `maxReplicas` limits. Pods-ku `resource requests` define pannirukkanum, illana utilization calculate aagaadhu. `Cluster Autoscaler` nodes-a add pannum, `VPA` Pod-oda resources-a vertical-a adjust pannum. Cooldown periods flapping-a thadukkum.","`Horizontal Pod Autoscaler` (HPA) oru cluster-a auto-scale panni workload-a. Main function: maintain a constant number of pods (web app instances) within a specified target number.
+
+* `scaleTargetRef` - aai solli app-a target-a (Deployment).
+* `minReplicas` - minimum number of pods to run.
+* `maxReplicas` - maximum number of pods to run.
+* `metrics` - metrics to track for scaling decision.
+    * `type: Resource` - specifies the resource (CPU utilization) to monitor.
+    * `target` - target value for the resource utilization.
+    * `averageUtilization` - average CPU utilization threshold.",,,
+25,44,"<start_of_turn>user
+How do Kafka partitions and consumer groups work?<end_of_turn>
+<start_of_turn>model
+","Kafka `topic` neraiya `partitions`-a split aagirukkum, ovvoru partition oru ordered, append-only log. Producer message-a `key` hash vachi partition-ku anuppum, same key eppavum same partition-ku pogum, adhunaala per-key ordering kedaikkum. `Consumer group`-la neraiya consumers irundha, ovvoru partition-um group-la oru consumer-ku mattum assign aagum, so parallel processing. Consumers count partitions-a vida adhigam-na extra consumers idle. Ovvoru consumer `offset` (evlo padichaachu)-a track pannum. Partitions count scalability decide pannum.","`Kafka` is a distributed streaming platform for real-time data processing. It uses `partitions` and `consumer groups` to distribute data processing tasks across multiple nodes.
+
+**Partitions:**
+- A topic is divided into multiple partitions.
+- Each partition contains a subset of the data.
+- Producers publish messages to a specific partition.
+
+**Consumer Groups:**
+- A consumer group is a set of consumers that subscribe to a topic.
+- Each consumer in a group receives messages from the corresponding partition.
+- Consumers can be configured to consume messages in order or out of order.
+
+**Relationship between partitions and consumer groups:**
+- A consumer group is associated with a single topic.
+- Multiple consumers can subscribe to the same topic.
+- Each consumer in a group will receive messages from the corresponding partition.
+- Consumers can be configured to handle messages differently based on the partition they receive.",,,
+26,27,"<start_of_turn>user
+How does list slicing work in Python?
+
+Context:
+nums = [10, 20, 30, 40, 50]
+nums[1:4]
+nums[::-1]
+nums[-2:]<end_of_turn>
+<start_of_turn>model
+","Syntax `list[start:stop:step]`. `start` include aagum, `stop` exclude aagum. `nums[1:4]` -> `[20, 30, 40]`. Start illa-na `0`, stop illa-na end varaikkum. Negative index end-la irundhu count pannum, `nums[-2:]` -> `[40, 50]`. `step` `-1` na reverse: `nums[::-1]` -> `[50, 40, 30, 20, 10]`. Slicing eppavum `new list` (shallow copy) return pannum. Strings and tuples-kum same work aagum.","`list[start:end]` na ovvoru index-kum `start` to `end`-ku irukkura elements-a return pannum. `start` `None`-a vecha `-1`-ku start aagum. `end` `None`, `len(list)`-a vechuru end-la irundhu irukkum. `slice(0, None)` na `list[0:None]`, `slice(None, None)` illaama empty list return pannum, `None` illaama `TypeError` varum. `list[::-1]` reverse pannum. Idhu Python-oda `in-place` operation, array-a mutate pannaadhu. `list.copy()` use pannalaam. `list[i:j]` copy pannum, original-a mutate pannanum.",,,
+27,21,"<start_of_turn>user
+What is the Master Theorem for solving recurrence relations?<end_of_turn>
+<start_of_turn>model
+","Divide and conquer algorithms-oda time complexity `T(n) = a * T(n/b) + f(n)` maadhiri recurrence-a varum. `a` subproblems count, `b` size reduction factor, `f(n)` divide and combine cost. `Master Theorem` `n^(log_b a)`-a `f(n)`-oda compare pannum: `f(n)` chinna-na `T(n) = Theta(n^(log_b a))`, rendum same-na `Theta(n^(log_b a) * log n)`, `f(n)` periya-na `Theta(f(n))`. Example: `Merge Sort` `T(n) = 2T(n/2) + n` -> `Theta(n log n)`. `Binary Search` `T(n) = T(n/2) + 1` -> `Theta(log n)`.","`T(n) = a * T(n/b) + f(n)` nu `a` constant, `b > 1` constant, and `f(n)` `n`-ku linear or constant-ku irundha, `a > 1`, `0 < b < 1` na `T(n)=O(n^b)`. Example: `T(N) = 2 * T(N/2) + N` -> `a = 2`, `b = 2/3`, `f(N) \leq N \leq 1` -> `T(1) = O(N^2)`. Idhu `big-O` bound-ku use aagum. Time complexity-a measure panna `T(2^k)` nu `k`-la interpolate pannalaam. `a > b` na `a` dominant, `a = b` na linear,",,,
+28,60,"<start_of_turn>user
+What is event bubbling and event delegation?
+
+Context:
+document.querySelector('ul').addEventListener('click', (e) => {
+  if (e.target.tagName === 'LI') console.log(e.target.textContent);
+});<end_of_turn>
+<start_of_turn>model
+","`Event bubbling` na oru child element-la event nadandha, adhu parent, grandparent nu DOM tree-la mela `bubble up` aagum. Idhunaala parent-la irukkura listener-um trigger aagum. `Event delegation` na idha use panni, ovvoru child-kum thani listener podaama parent-la oru listener mattum podradhu. Ungal code-la `ul`-la oru listener dhaan irukku, `e.target` vechi edha click pannaanga nu theriyum. Dynamic-a add aagura `li` elements-kum automatically work aagum, memory-um save aagum. Bubbling-a niruthanum-na `e.stopPropagation()` use pannalaam.","`Event bubbling` na `parent` element-la irundhu `child` element-ku event-a anuppum. Ungal code-la `document.querySelector('ul')`-a click pannitu `ul`-ku anuppum, `ul`-la irundhu `LI`-ku anuppum. Ungal code-la `e.target.tagName` check pannalaam, `e.stopPropagation()` pannaa `stopPropagation()` venum-na `LI`-ku anuppum. `Event delegation` na `parent` element-ku event anuppum, `child` element-ku `event listener` anuppum, adhu `event.target`-a direct-a check pannaama, `event.stopPropagation()` illaama `child`-ku anuppum. Idhu `DOM traversal` (closest parent) venum-na fast. Modern frameworks-la idhu common practice. `ons",,,
+29,55,"<start_of_turn>user
+How should passwords be stored securely in a database?
+
+Context:
+const hash = await bcrypt.hash(password, 10);
+const ok = await bcrypt.compare(input, hash);<end_of_turn>
+<start_of_turn>model
+","Passwords-a eppavum `plain text`-la store pannakoodadhu, database leak aana ellaarum password-um poidum. `Hashing` use pannanum, adhavadhu one-way function, hash-la irundhu password-a thirumba edukka mudiyaadhu. `MD5` or `SHA-256` maadhiri fast hashes-ku bad idea, attackers seconds-la billions try pannuvaanga. `bcrypt`, `argon2`, `scrypt` maadhiri slow hashes use pannanum. Ungal code-la `10` dhaan `salt rounds`, adhu adhigam aanaa slow-a aagum. `Salt` ovvoru password-kum random-a add aagum, so same password-ku different hash varum, `rainbow table` attack work aagaadhu. Login-la `compare` use pannuvom.","`bcrypt` library-a password encryption-a pannakkum. `bcrypt.hash()` oru password-a hash-aagum, 10 aanaa password-a encryptaam. `bcrypt.compare()` oru password-a encryptaam, input-a compare-aagum. If match found, password-a secure-a pannakkum.",,,
+30,52,"<start_of_turn>user
+How do you find the Kth smallest element in a BST?
+
+Context:
+function kthSmallest(root, k) {
+  const stack = [];
+  let cur = root;
+  while (cur || stack.length) {
+    while (cur) { stack.push(cur); cur = cur.left; }
+    cur = stack.pop();
+    if (--k === 0) return cur.val;
+    cur = cur.right;
+  }
+}<end_of_turn>
+<start_of_turn>model
+","BST-oda `inorder traversal` eppavum values-a sorted order-la tharum, so `k`-th element-a visit pannum bodhu stop pannidalaam. Ungal code iterative inorder: left-ku poitte `stack`-la push pannuvom, appuram pop panni visit pannuvom, `k` zero aana adhu dhaan answer, illana `right` subtree-ku pogum. Full traversal panna thevai illa, so time `O(h + k)`. Tree-ku frequent insert/delete irundha, ovvoru node-layum `subtree size` store pannaa `O(h)`-la answer kedaikkum.","Kth smallest element oru BST-a koodu kuthu solliyaan. Koodu kuthu solliyaan root-a kuthu solliyaan, left-a right-a kuthu solliyaan. Left-a right-a kuthu solliyaan-a root-a kuthu solliyaan-a koodu kuthu solliyaan. Kuthu solliyaan-a koodu kuthu solliyaan-a root-a kuthu solliyaan-a koodu kuthu solliyaan.",,,
+31,40,"<start_of_turn>user
+What is a Fenwick Tree (Binary Indexed Tree)?<end_of_turn>
+<start_of_turn>model
+","`Fenwick Tree` prefix sum-a efficient-a maintain panna use aagura chinna data structure. Idhu oru simple array dhaan, aana ovvoru index-um oru specific range-oda sum-a store pannum, index-oda `last set bit` vachi range decide aagum (`i & -i`). `update` and `prefix query` rendume `O(log n)`. `Segment Tree`-a vida code short-a irukkum, memory-um kammi. Aana sum maadhiri invertible operations-ku dhaan easy, min/max-ku suit aagaadhu.","Fenwick tree oru binary search tree-a koodalaiyaar. Root node-a minimum value, all other nodes-a binary combination of their children. Build-a-tree process: root node-a, left child, right child. Find-a-value process: search root node, if found, return that node. Delete-a-value process: find node to delete, set its `key` to a sentinel value, then delete the node.",,,
+32,40,"<start_of_turn>user
+What is a Fenwick Tree (Binary Indexed Tree)?<end_of_turn>
+<start_of_turn>model
+","`Fenwick Tree` prefix sum-a efficient-a maintain panna use aagura chinna data structure. Idhu oru simple array dhaan, aana ovvoru index-um oru specific range-oda sum-a store pannum, index-oda `last set bit` vachi range decide aagum (`i & -i`). `update` and `prefix query` rendume `O(log n)`. `Segment Tree`-a vida code short-a irukkum, memory-um kammi. Aana sum maadhiri invertible operations-ku dhaan easy, min/max-ku suit aagaadhu.","`Fenwick Tree` oru binary search tree, ovvoru index `i`-kum `[0, i]` range-a binary search panna, ovvoru range-oda sum-a store pannum. `[0, i]` range-la irundhu `sum`-a calculate panna `Fenwick Tree` use pannuvom. Sum calculate panna `O(log n)` time, range-la irundhu `O(log n)` time. Range sum problem-ku idhu romba useful. Example: `bitwise AND`, `bitwise XOR`, `bitwise OR`, `bitwise NOT`, `majority element`, `majority window`, `majority string` maadhiri problems-ku idhu use aagum. `Fenwick Tree` oru `Fenwick array`-oda special case.",,,
+33,35,"<start_of_turn>user
+What is a multi-stage build in Docker?
+
+Context:
+FROM node:20 AS build
+WORKDIR /app
+COPY . .
+RUN npm ci && npm run build
+
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html<end_of_turn>
+<start_of_turn>model
+","`Multi-stage build`-la oru `Dockerfile`-la multiple `FROM` stages irukkum. Mudhal stage-la (`build`) full Node.js, dev dependencies vachi app-a build pannuvom. Rendaavadhu stage-la (`nginx:alpine`) chinna final image-la, `COPY --from=build` vachi build output mattum copy pannuvom. Final image-la build tools, source code, `node_modules` illa, so size romba kammi (`1GB` -> `30MB`), attack surface kammi, secure. Compiled languages (Go, Java)-ku-um romba useful.","`Multi-stage build` na Docker image-la multiple steps-la build pannuvom. `First stage` (build) `node:20` image-la code-a compile pannum, `second stage` (deploy) `nginx:alpine` image-la deploy pannum. Ungal example-la `node:20` build-ku romba fast, deploy-ku lightweight `nginx` use pannuvom. Build-la `npm ci` use pannalaam, deploy-la `npm run build` use pannalaam. `Dockerfile`-la `FROM` statements-a order-la irukkum. `docker build --no-cache` cache-a skip pannum. `docker-compose`-la `build` and `run` commands-um multi-stage build-ku use pannum. `docker-compose build` fast-a run pannum.",,,
+34,39,"<start_of_turn>user
+What is the Boyer-Moore Voting Algorithm for finding the majority element?
+
+Context:
+function majorityElement(nums) {
+  let candidate = null, count = 0;
+  for (const n of nums) {
+    if (count === 0) candidate = n;
+    count += n === candidate ? 1 : -1;
+  }
+  return candidate;
+}<end_of_turn>
+<start_of_turn>model
+","Majority element na array-la `n/2`-kku mela vara element. `Boyer-Moore` `O(1)` space-la one pass-la kandupidikkum. `candidate` and `count` maintain pannuvom. Same element vandha `count++`, different vandha `count--`. `count` zero aana pudhu `candidate` select pannuvom. Majority element ovvoru different element-oda 'cancel' aanaalum kooda meedhi irukkum, adhunaala kadaisiya adhu dhaan candidate. Majority irukkum nu guarantee illa-na, last-la verify pannanum.","`Majority element` na `2/3`-la irukkura elements-a irukkura vote-a edukkum, `count` positive-a irundha majority. `Boyer-Moore` algorithm-la ovvoru step-layum `count` positive-a irundha vote-a edukkum, negative-a irundha vote-a edukkum. Ovvoru step-layum `count` `0` aana-na `candidate`-a `majority`-a irukkura varaikkum, so `O(n)`. Idhu `majority voting`-oda `O(n)`, `O(1)`-la kandupidikkalaam. `count` negative-a irundha `candidate`-a reject pannanum. `count` `0` aana-na `majority`-a kandupidikkum. `count` `0` aana",,,
+35,27,"<start_of_turn>user
+How does list slicing work in Python?
+
+Context:
+nums = [10, 20, 30, 40, 50]
+nums[1:4]
+nums[::-1]
+nums[-2:]<end_of_turn>
+<start_of_turn>model
+","Syntax `list[start:stop:step]`. `start` include aagum, `stop` exclude aagum. `nums[1:4]` -> `[20, 30, 40]`. Start illa-na `0`, stop illa-na end varaikkum. Negative index end-la irundhu count pannum, `nums[-2:]` -> `[40, 50]`. `step` `-1` na reverse: `nums[::-1]` -> `[50, 40, 30, 20, 10]`. Slicing eppavum `new list` (shallow copy) return pannum. Strings and tuples-kum same work aagum.","`list[start:end]` na ovvoru index-kum `start` to `end`-ku irukkura elements-a return pannum. `start` `None`-a vecha `-1`-ku irundhu start aagum. `end` `None`-a vecha `len(lst)`-a vecha irundhu end aagum. `None` illaama `end` `None`-a vecha `len(lst)`-a vecha irundhu end aagum. `slice(0, None)` na `range(0, len)` nu return pannum. `slice(None, None)` na `lst`-oda ellaam return pannum. `slice(start, end, step)` default `1`-la irukkum. `step` negative-na reverse order. `slice(start, end, -1)` negative-na reverse-",,,
+36,47,"<start_of_turn>user
+How do you solve the Climbing Stairs problem?<end_of_turn>
+<start_of_turn>model
+","`n` steps irukkum bodhu, oru time-la 1 or 2 steps eri vara mudiyum, evlo ways-nu kekkuradhu. `n`-th step-ku vara last move 1 step (`n-1`-la irundhu) or 2 steps (`n-2`-la irundhu) aagum. So `ways(n) = ways(n-1) + ways(n-2)`, idhu `Fibonacci` pattern dhaan. Recursion-la direct-a pota `O(2^n)`, `memoization` or bottom-up DP use panna `O(n)`. Last-2 values mattum vachaa space `O(1)`-ku kondu vandhidalaam.","`Climbing stairs` problem oru client-side logic-a solva pannem. Client-a aalayam, server-a remote, aathu app-a perchaam. Client-a aalayam, server-a stream-a data, aathu app-a perchaam. Client-a aalayam, server-a encode-a data, aathu app-a perchaam. Client-a aalayam, server-a decode-a data, aathu app-a perchaam.",,,
+37,24,"<start_of_turn>user
+What are database migrations?<end_of_turn>
+<start_of_turn>model
+","`Migration` na database `schema` changes-a (table create, column add, index add) code-a version-controlled files-a manage pannuradhu. Ovvoru migration-kum `up` (apply) and `down` (rollback) irukkum. Tools: `Flyway`, `Liquibase`, `Prisma Migrate`, `Django migrations`, `Knex`. Benefits: team-la ellaa developers-um, dev, staging, production ellaa environments-layum same schema-va maintain pannalaam. Production-la migrations-a run pannum bodhu `downtime` and `locking` pathi careful-a irukkanum.","`Migrations` oru database schema-a oru time-la (or multiple times) update panna, `schema-breaking` changes-a avoid pannum. Example: `users` table-a add panna, `users_id` column rename panna, `users_email` column add panna. `migrations` table-la history irukkum, `ROLLBACK` command rollback pannum. `MIGRATION_STEP_VERSION` column vechi migrations-oda order-a maintain pannuvom. `sequelize-cli` or `pgadmin migrations` use pannalaam. `migrations-table` and `MIGRATION_STEP_VERSION` vechi schema-a safe-a maintain pannanum.",,,
+38,35,"<start_of_turn>user
+What is a multi-stage build in Docker?
+
+Context:
+FROM node:20 AS build
+WORKDIR /app
+COPY . .
+RUN npm ci && npm run build
+
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html<end_of_turn>
+<start_of_turn>model
+","`Multi-stage build`-la oru `Dockerfile`-la multiple `FROM` stages irukkum. Mudhal stage-la (`build`) full Node.js, dev dependencies vachi app-a build pannuvom. Rendaavadhu stage-la (`nginx:alpine`) chinna final image-la, `COPY --from=build` vachi build output mattum copy pannuvom. Final image-la build tools, source code, `node_modules` illa, so size romba kammi (`1GB` -> `30MB`), attack surface kammi, secure. Compiled languages (Go, Java)-ku-um romba useful.","`Multi-stage build` na Docker image-la multiple steps-la build pannuvom. `First stage` (build) `node:20` image-la code-a compile pannum, `second stage` (deploy) `nginx:alpine` image-ku copy pannum, app-a deploy pannum. Ungal example-la `npm ci && npm ci` run aagi `node:alpine`-la build aagum, `nginx`-la deploy aagum. `Dockerfile`-la `FROM` statements-a order-la irukkum. `docker build --no-cache` cache illa-na, fast. `docker-compose`-la multiple stages-a irukkalaam. `docker images`-la cache-a irukku. `docker push`-la image-a cache-la irukku, cache-a remove pannum. `FROM` order-la",,,
+39,47,"<start_of_turn>user
+How do you solve the Climbing Stairs problem?<end_of_turn>
+<start_of_turn>model
+","`n` steps irukkum bodhu, oru time-la 1 or 2 steps eri vara mudiyum, evlo ways-nu kekkuradhu. `n`-th step-ku vara last move 1 step (`n-1`-la irundhu) or 2 steps (`n-2`-la irundhu) aagum. So `ways(n) = ways(n-1) + ways(n-2)`, idhu `Fibonacci` pattern dhaan. Recursion-la direct-a pota `O(2^n)`, `memoization` or bottom-up DP use panna `O(n)`. Last-2 values mattum vachaa space `O(1)`-ku kondu vandhidalaam.","`DP`-la `dp[i]` na `i` stairs-la reach panna mudiyura minimum steps count. `dp[i] = min(dp[i - 1], dp[i - 2]) + 1`. Base case `i = 1` and `i = 2` na direct-a `0` return pannuvom. Time `O(n)`, space `O(n)`. Idhu `Fibonacci DP`-oda `0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...`. Idhu `DP`-oda classic example. `DP`-la `O(n)`-la solve pannaa `Memoization` and `Dynamic Programming`-a vida romba romba different. `Top-down` approach-la `memo` dictionary-a use pannalaam. `Bottom",,,
+40,3,"<start_of_turn>user
+How do you find the intersection node of two linked lists?
+
+Context:
+function getIntersectionNode(a, b) {
+  let p = a, q = b;
+  while (p !== q) {
+    p = p ? p.next : b;
+    q = q ? q.next : a;
+  }
+  return p;
+}<end_of_turn>
+<start_of_turn>model
+","Rendu linked lists oru node-la merge aagi, appuram same-a continue aagum. Two pointers `p` and `q` vachi: `p` list `a`-la, `q` list `b`-la start aagum. Oru pointer end-a reach panna, adha vera list-oda head-ku maathidvom. Rendu pointers-um `lenA + lenB` steps-a total-a travel pannum bodhu, same distance-la intersection-la meet aagum. Intersection illa-na rendume `null`-la meet aagi `null` return aagum. Time `O(m + n)`, space `O(1)`.",Ovvoru list-layum `head`-a compare pannuvom. `p` and `q` rendum meet aagura nodes-a `meet node` nu mark pannuvom. `p` and `q` rendaiyum meet aagaadhu nu `p`-oda next-a `q`-ku `p`-oda meet node-a mark pannuvom. Idhu `p` and `q` rendaiyum meet aagaadhu nu `p`-oda next-a `q`-ku `p`-oda meet node-a mark pannuvom. Idhu `p` and `q` rendaiyum meet aagaadhu nu `p`-oda next-a `q`-ku `p`-oda meet node-a mark pannuvom. Idhu `p` and `q` rendaiyum meet aagaadhu nu `p`-oda next,,,
+41,54,"<start_of_turn>user
+What is the Builder pattern?
+
+Context:
+const req = new RequestBuilder()
+  .url('/api/users')
+  .method('POST')
+  .header('Auth', 'token')
+  .body({ name: 'Raj' })
+  .build();<end_of_turn>
+<start_of_turn>model
+","Neraiya optional parameters irukkura complex object create panna constructor-la 10 arguments pass pannuradhu `telescoping constructor` problem, order marandhuduvom. `Builder pattern`-la step by step `method chaining` vachi fields-a set pannitu, kadaisiya `build()` call panna final object kedaikkum. Code readable-a irukkum, immutable objects create panna easy, validation `build()`-la panna mudiyum. Java-la `StringBuilder`, Lombok `@Builder`, query builders (`Knex`, `SQLAlchemy`) idhoda examples.","`Builder pattern` oru object create panra steps-a split pannum, `Builder` class object-a build pannum, adhunaala `constructor hell` avoid aagum. Ungal code-la `new RequestBuilder()` call panni, `url`, `method`, `header`, `body` properties-a add panni `build()` call pannuvom. `Request` object-a `RequestBuilder`-la create panni, `RequestBuilder`-a `Request`-ku convert pannalaam. Benefits: `config options` flexible-a, `logging` easy-a, `DRY` code. Drawbacks: `builder object` create panni, adhunaala `builder pattern` use pannaa `constructor hell` avoid pannalaam. `Builder pattern`-oda `Builder pattern`-a use panna `circular dependency` problem varum.",,,
+42,3,"<start_of_turn>user
+How do you find the intersection node of two linked lists?
+
+Context:
+function getIntersectionNode(a, b) {
+  let p = a, q = b;
+  while (p !== q) {
+    p = p ? p.next : b;
+    q = q ? q.next : a;
+  }
+  return p;
+}<end_of_turn>
+<start_of_turn>model
+","Rendu linked lists oru node-la merge aagi, appuram same-a continue aagum. Two pointers `p` and `q` vachi: `p` list `a`-la, `q` list `b`-la start aagum. Oru pointer end-a reach panna, adha vera list-oda head-ku maathidvom. Rendu pointers-um `lenA + lenB` steps-a total-a travel pannum bodhu, same distance-la intersection-la meet aagum. Intersection illa-na rendume `null`-la meet aagi `null` return aagum. Time `O(m + n)`, space `O(1)`.","`Intersection node` two linked lists-a aathu, aanaa intersection point-a identify panna. By iteratin through the lists, we compare the `next` pointers of `p` and `q`. If they meet, we find the intersection point. This algorithm is called `linear search` or `Floyd's algorithm`.",,,
+43,2,"<start_of_turn>user
+What is the difference between git pull and git fetch?
+
+Context:
+git fetch origin
+git pull origin main<end_of_turn>
+<start_of_turn>model
+","`git fetch` remote repository-la irundhu pudhu commits, branches-a download pannum, aana ungal `working directory` and local branch-a maathaadhu, safe. Remote enna maariruku nu paathitu decide pannalaam (`git diff origin/main`). `git pull` = `git fetch` + `git merge` (or `rebase` with `--rebase`), adhavadhu download panni udane local branch-la merge-um pannidum. Conflicts varalaam. Safe-a work panna mudhalla `fetch` panni check pannitu appuram merge pannuradhu nalla habit.","`git pull` oru command, `git fetch` mattum oru step. `git fetch` oru remote-la `origin` branch-oda latest commits and changes-a `fetch` pannum, `origin` branch-oda `HEAD`-a `remote-tracking branch` `origin/main`-a point pannum. `git pull` `fetch` + `merge` pannum, `git fetch`-a mattum `git merge origin/main`-a thirumba pannum. `git fetch`-la `conflict` aagaadhu, aana `git pull`-la `merge conflict` aagaadhu. `git fetch`-la `git status`-la `Already up-to-date` nu theriyum, `git pull`-la `Already up-to-date, nothing to do` nu theriyum. `git pull`-la `git merge`-a",,,
+44,2,"<start_of_turn>user
+What is the difference between git pull and git fetch?
+
+Context:
+git fetch origin
+git pull origin main<end_of_turn>
+<start_of_turn>model
+","`git fetch` remote repository-la irundhu pudhu commits, branches-a download pannum, aana ungal `working directory` and local branch-a maathaadhu, safe. Remote enna maariruku nu paathitu decide pannalaam (`git diff origin/main`). `git pull` = `git fetch` + `git merge` (or `rebase` with `--rebase`), adhavadhu download panni udane local branch-la merge-um pannidum. Conflicts varalaam. Safe-a work panna mudhalla `fetch` panni check pannitu appuram merge pannuradhu nalla habit.","`Git pull` and `git fetch` are two commands for managing code from a remote repository.
+
+`git fetch` downloads the latest changes from the remote repository and updates the local repository.
+
+`git pull` also updates the local repository with the latest changes from the remote repository, as well as performing a merge if necessary.
+
+`git fetch` is used to keep the local repository up-to-date with the remote repository.
+
+`git pull` is used to download and merge changes from the remote repository.",,,
+45,39,"<start_of_turn>user
+What is the Boyer-Moore Voting Algorithm for finding the majority element?
+
+Context:
+function majorityElement(nums) {
+  let candidate = null, count = 0;
+  for (const n of nums) {
+    if (count === 0) candidate = n;
+    count += n === candidate ? 1 : -1;
+  }
+  return candidate;
+}<end_of_turn>
+<start_of_turn>model
+","Majority element na array-la `n/2`-kku mela vara element. `Boyer-Moore` `O(1)` space-la one pass-la kandupidikkum. `candidate` and `count` maintain pannuvom. Same element vandha `count++`, different vandha `count--`. `count` zero aana pudhu `candidate` select pannuvom. Majority element ovvoru different element-oda 'cancel' aanaalum kooda meedhi irukkum, adhunaala kadaisiya adhu dhaan candidate. Majority irukkum nu guarantee illa-na, last-la verify pannanum.","`Boyer-Moore Voting Algorithm` oru simple, single-pass algorithm. Algorithm-a two pointers, one at the start and one at the end of the array. Pointers-a compare value, aanaa candidate element. If candidate element-a equal current element, count-a 1, othwer 1 kaanum. After algorithm-a, candidate element-a aanaa majority element.",,,
+46,41,"<start_of_turn>user
+What is Exponential Search and when do you use it?<end_of_turn>
+<start_of_turn>model
+","`Exponential Search` oru sorted array-la, size theriyaadha or romba periya array-la target-a find panna use aagum. Mudhalla index `1, 2, 4, 8, 16...` nu double pannitte pogi, `arr[i] >= target` aagura range-a kandupidippom. Appuram andha range-kulla `Binary Search` pannuvom. Time `O(log n)`. Target array-oda start-ku kitta irundha `Binary Search`-a vida fast. Infinite or unbounded sorted data-la search panna idhu nalla option.","`Exponential Search` oru `binary search`-oda variant, `log n` steps-la search pannum. Oru number `n` times `n`-ku multiply pannuvom, adhu `n^log n` operations. Oru number-a `n` oru power-la multiply panna, `log` steps-ku search pannum, so `n^0.5` or `n/2` rendaiyum use pannuvom. Example, `n = 10000`, `log n = 4`, `n^4 = 65536`, so `n/4 = 256` rendaiya search pannuvom (`n/2 = 512`). Search-la `log n`, sort-la `n^2` rendayum, so idhu romba fast. Time complexity `O(log n)`, space `O(1)`. `",,,
+47,27,"<start_of_turn>user
+How does list slicing work in Python?
+
+Context:
+nums = [10, 20, 30, 40, 50]
+nums[1:4]
+nums[::-1]
+nums[-2:]<end_of_turn>
+<start_of_turn>model
+","Syntax `list[start:stop:step]`. `start` include aagum, `stop` exclude aagum. `nums[1:4]` -> `[20, 30, 40]`. Start illa-na `0`, stop illa-na end varaikkum. Negative index end-la irundhu count pannum, `nums[-2:]` -> `[40, 50]`. `step` `-1` na reverse: `nums[::-1]` -> `[50, 40, 30, 20, 10]`. Slicing eppavum `new list` (shallow copy) return pannum. Strings and tuples-kum same work aagum.",List slicing in Python is a subsetting operation. `nums[1:4]` oru 2nd and 3rd element-a extract panni. `nums[::-1]` oru 1st and 2nd element-a reverse order panni. `nums[-2:]` oru last element-a extract panni.,,,
+48,21,"<start_of_turn>user
+What is the Master Theorem for solving recurrence relations?<end_of_turn>
+<start_of_turn>model
+","Divide and conquer algorithms-oda time complexity `T(n) = a * T(n/b) + f(n)` maadhiri recurrence-a varum. `a` subproblems count, `b` size reduction factor, `f(n)` divide and combine cost. `Master Theorem` `n^(log_b a)`-a `f(n)`-oda compare pannum: `f(n)` chinna-na `T(n) = Theta(n^(log_b a))`, rendum same-na `Theta(n^(log_b a) * log n)`, `f(n)` periya-na `Theta(f(n))`. Example: `Merge Sort` `T(n) = 2T(n/2) + n` -> `Theta(n log n)`. `Binary Search` `T(n) = T(n/2) + 1` -> `Theta(log n)`.","`T(n) = a * T(n/b) + f(n)` nu `a` constant, `b > 1` constant, `f(n)` `n`-ku linear. `a > b^k` na `a^n` term dominant, `a < b^k` na `b^k * log n` term dominant, `b = k` na `b^k * n` term dominant. `a < b^k` na `log n` term dominant. Time complexity `O(a^k * log n)`. `a < b^k` na `log n` term dominant, `a = b^k` na `b^k * n` dominant, `a > b^k` na `a^n` dominant. `a = b^k` na `O(n^k)`. Idhu `online algorithm`-ku, `online sort`",,,
+49,10,"<start_of_turn>user
+How do you remove the Nth node from the end of a linked list?<end_of_turn>
+<start_of_turn>model
+","Two pointers use pannuvom. Mudhalla `fast` pointer-a `n` steps munnadi anuppuvom. Appuram `slow` and `fast` rendum sync-a oru oru step move pannuvom, `fast` last node-a reach pannura varaikkum. Appo `slow` delete panna vendiya node-oda `previous` node-la irukkum, so `slow.next = slow.next.next` pannaa pothum. Head-a delete panna vendiya case-ku `dummy` node use pannuvom. Time `O(n)`, only one pass, space `O(1)`.","`O(n)`, `O(1)` extra space-la. `n` nodes-ku `n - 1` pointers-a keep pannuvom. `i = n - 1` na last node-ku irundhu thirumba thirumba pointer-a move pannuvom. `i--` nu `n - 1`-a eduthu nu `n`-ku pogum. Idhu `doubly linked list`-la dhaan easy. Idhu `Floyd's Tortoise and Hare` technique-oda `O(1)` space version. Idhu `circular linked list`-ku dhaan work aagum. `head = tail = tail.next = NULL` dhaan start pannuvom. Time `O(n)`, space `O(1)`. `head = tail = tail.next = NULL` dhaan `O(1)`-la remove pannalaam. `tail.",,,
+50,52,"<start_of_turn>user
+How do you find the Kth smallest element in a BST?
+
+Context:
+function kthSmallest(root, k) {
+  const stack = [];
+  let cur = root;
+  while (cur || stack.length) {
+    while (cur) { stack.push(cur); cur = cur.left; }
+    cur = stack.pop();
+    if (--k === 0) return cur.val;
+    cur = cur.right;
+  }
+}<end_of_turn>
+<start_of_turn>model
+","BST-oda `inorder traversal` eppavum values-a sorted order-la tharum, so `k`-th element-a visit pannum bodhu stop pannidalaam. Ungal code iterative inorder: left-ku poitte `stack`-la push pannuvom, appuram pop panni visit pannuvom, `k` zero aana adhu dhaan answer, illana `right` subtree-ku pogum. Full traversal panna thevai illa, so time `O(h + k)`. Tree-ku frequent insert/delete irundha, ovvoru node-layum `subtree size` store pannaa `O(h)`-la answer kedaikkum.","BST-la `K`-ku rendu smallest element-a kandupidikkum, so `K` elements-a stack-la store pannuvom. `cur` current node, `stack.length` stack-la irundhu irukkura elements count. Left-la irukkala node-a `cur.left`-la pogum, stack-la mattum irundha, right-la irukku. `cur = stack[stack.length - 1]` nu `cur.right`-ku pogum, `stack = stack.slice(0, -1)` nu stack-la poidum. `K` vandha `K` varaikkum stack-la varaikkum, last element rendu value. Time `O(n)`. `K` chinna-a irundha BST-la iruka-na stack overflow aagidum. `kthSmallest(node, k - 1",,,
+51,54,"<start_of_turn>user
+What is the Builder pattern?
+
+Context:
+const req = new RequestBuilder()
+  .url('/api/users')
+  .method('POST')
+  .header('Auth', 'token')
+  .body({ name: 'Raj' })
+  .build();<end_of_turn>
+<start_of_turn>model
+","Neraiya optional parameters irukkura complex object create panna constructor-la 10 arguments pass pannuradhu `telescoping constructor` problem, order marandhuduvom. `Builder pattern`-la step by step `method chaining` vachi fields-a set pannitu, kadaisiya `build()` call panna final object kedaikkum. Code readable-a irukkum, immutable objects create panna easy, validation `build()`-la panna mudiyum. Java-la `StringBuilder`, Lombok `@Builder`, query builders (`Knex`, `SQLAlchemy`) idhoda examples.","`Builder pattern` oru object create panra steps-a split pannum, `Builder` class object-a build pannum, adhunaala `constructor hell` avoid aagum. Ungal code-la `new RequestBuilder()` call panni, `url`, `method`, `header`, `body` properties-a add panni `build()` call pannuvom. `Request` object-a `RequestBuilder`-la create panni, adhu `Request` interface-a implement pannum. Idhu `MVC`-oda controller-a split panna romba useful. `Builder pattern`-ku `SOLID` principle apply aagum, `Single Responsibility Principle`-a follow pannum.",,,
+52,55,"<start_of_turn>user
+How should passwords be stored securely in a database?
+
+Context:
+const hash = await bcrypt.hash(password, 10);
+const ok = await bcrypt.compare(input, hash);<end_of_turn>
+<start_of_turn>model
+","Passwords-a eppavum `plain text`-la store pannakoodadhu, database leak aana ellaarum password-um poidum. `Hashing` use pannanum, adhavadhu one-way function, hash-la irundhu password-a thirumba edukka mudiyaadhu. `MD5` or `SHA-256` maadhiri fast hashes-ku bad idea, attackers seconds-la billions try pannuvaanga. `bcrypt`, `argon2`, `scrypt` maadhiri slow hashes use pannanum. Ungal code-la `10` dhaan `salt rounds`, adhu adhigam aanaa slow-a aagum. `Salt` ovvoru password-kum random-a add aagum, so same password-ku different hash varum, `rainbow table` attack work aagaadhu. Login-la `compare` use pannuvom.","`bcrypt` oru `PBKDF2` (`PBKDF` = Password-Based Key Derivation Function) algorithm use pannum, `salt` and `iterations` vachi password-a hash pannum. Password-a `sha2` vachi encrypt pannuvom, `salt`, `iterations`, `hash` vachi `bcrypt.compare()` use pannalaam. Password-ku `salt` use pannuradhu, `iterations` use pannum bodhu `brute force` attack kammi aagum. Database-la `password` field-a `text`-a store pannuvom. Password-va vida `salt` vechi encrypt panni, `hash` vechi compare pannuvom (`bcrypt.compare`). Password-a encrypt panna `salt`-a secret-a treat pannanum. `bcrypt.genSalt()` and `bcrypt.hash()` use panra libraries-la irukku. Safe password length:",,,
+53,42,"<start_of_turn>user
+How does the Horizontal Pod Autoscaler work in Kubernetes?
+
+Context:
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+spec:
+  scaleTargetRef: { kind: Deployment, name: web }
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource: { name: cpu, target: { type: Utilization, averageUtilization: 70 } }<end_of_turn>
+<start_of_turn>model
+","`HPA` Pods-oda `replica count`-a load base-la automatic-a increase/decrease pannum. Metrics server-la irundhu CPU, memory (or custom metrics) paarthu, target (`70%` CPU) maintain panna replicas-a calculate pannum: `desired = current * (currentMetric / target)`. `minReplicas` and `maxReplicas` limits. Pods-ku `resource requests` define pannirukkanum, illana utilization calculate aagaadhu. `Cluster Autoscaler` nodes-a add pannum, `VPA` Pod-oda resources-a vertical-a adjust pannum. Cooldown periods flapping-a thadukkum.","`Horizontal Pod Autoscaler` (HPA) ovvoru pod-kum automatic-a scale pannum. `scaleTargetRef` pod-oda `Deployment` reference, `minReplicas`, `maxReplicas`, `metrics` (CPU utilization) settings irukkura options irukku. `minReplicas` and `maxReplicas` pod-kum maximum-a irukkura instances-a set pannum. `averageUtilization` metric-a base-la calculate panni target utilization-ku reach aana pod scale aagum. `targetCPUUtilizationMax` and `targetCPUUtilizationMin` metrics-ku target-ku maximum and minimum values set pannalaam. `CPU utilization` metric-ku `Utilization` type, `average` calculation use pannum. `CPU utilization` metric-ku `targetCPUUtilizationMax` and `targetCPUUtilizationMin` irundha automatic-a work aagum. `CPU utilization` metric-ku `",,,
+54,26,"<start_of_turn>user
+What is the difference between offset pagination and cursor pagination?
+
+Context:
+SELECT * FROM posts ORDER BY id LIMIT 10 OFFSET 20;
+SELECT * FROM posts WHERE id > 30 ORDER BY id LIMIT 10;<end_of_turn>
+<start_of_turn>model
+","`Offset pagination`-la `LIMIT` and `OFFSET` use pannuvom, `page 3` venum-na `OFFSET 20`. Simple, aana `OFFSET` periya-a aana database first 1 million rows-a skip panna kooda scan pannum, so slow. Rendavadhu, user page paarkkumbodhu pudhu rows insert aanaa duplicates or missing items varum. `Cursor pagination`-la last paartha item-oda `id` (cursor) vechi `WHERE id > 30` nu next page edukkuvom, index use aagum so romba fast, results-um stable. Aana random page-ku jump panna mudiyaadhu. Infinite scroll feeds-ku cursor, admin tables-ku offset.","`Offset pagination` a client-side implementation, client-a request panni server-a URL-a offset value. Server-a generate new set of results, a new offset value-a client-a request panni. This process-a repeat panni until all results-a collected.
+
+`Cursor pagination` server-side implementation, server-a generate a cursor value, a client-a request that cursor value-a results. This process-a continue panni until all results-a collected.",,,
+55,50,"<start_of_turn>user
+How does the useState hook work in React?
+
+Context:
+const [count, setCount] = useState(0);
+<button onClick={() => setCount(count + 1)}>{count}</button><end_of_turn>
+<start_of_turn>model
+","`useState(0)` oru array return pannum: current `state` value (`count`) and adha update panra function (`setCount`). `0` dhaan initial value. `setCount` call pannumbodhu React component-a `re-render` pannum, pudhu `count` value-oda. Direct-a `count = count + 1` nu mathina React-ku theriyaadhu, UI update aagaadhu. Previous value-a depend panna `setCount(prev => prev + 1)` nu functional update use panradhu safe. State update `asynchronous`-a batch aagum, so `setCount` kazhichi udane `count` print panna pazhaya value dhaan varum.","`useState` hook in React is a function that allows you to manage state of a component. It returns an array of two elements: `state` and `onChange`. `state` stores the current state of the component, and `onChange` is a callback function that is called when the state changes.
+
+`useState` is used to manage the count variable in the example. When the button is clicked, the `setCount` function is called, which updates the `state` array with the new count (1). The `onChange` callback is also called, which will be executed when the state changes.",,,
+56,38,"<start_of_turn>user
+Why does var in a for loop with setTimeout print the same value, and how do you fix it?
+
+Context:
+for (var i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 100);
+}<end_of_turn>
+<start_of_turn>model
+","`var` `function-scoped`, so loop-ku oru `i` variable dhaan irukkum. `setTimeout` callbacks 100ms appuram run aagum bodhu, loop mudinju `i = 3` aagirukkum, adhunaala `3, 3, 3` print aagum. Fix pannuradhu rendu ways: `var`-a `let` aa maathunaa, `let` `block-scoped` so ovvoru iteration-kum pudhu `i` create aagum (`0, 1, 2`). Illana `IIFE` use panni `i`-a ovvoru vaatiyum capture pannalaam. Closure and scope-a purinjikka idhu oru classic example.","`Var` in a `for` loop with `setTimeout` prints the same value because of hoisting. The variable `i` is hoisted to the top of the loop, so its value is the last one assigned to it when the loop finishes.
+
+To fix this, declare `i` inside the loop and initialize it with the desired value.
+
+```javascript
+for (var i = 0; i < 3; i++) {
+  (function(i) {
+    setTimeout(() => console.log(i), 100);
+  })(i);
+}
+```",,,
+57,39,"<start_of_turn>user
+What is the Boyer-Moore Voting Algorithm for finding the majority element?
+
+Context:
+function majorityElement(nums) {
+  let candidate = null, count = 0;
+  for (const n of nums) {
+    if (count === 0) candidate = n;
+    count += n === candidate ? 1 : -1;
+  }
+  return candidate;
+}<end_of_turn>
+<start_of_turn>model
+","Majority element na array-la `n/2`-kku mela vara element. `Boyer-Moore` `O(1)` space-la one pass-la kandupidikkum. `candidate` and `count` maintain pannuvom. Same element vandha `count++`, different vandha `count--`. `count` zero aana pudhu `candidate` select pannuvom. Majority element ovvoru different element-oda 'cancel' aanaalum kooda meedhi irukkum, adhunaala kadaisiya adhu dhaan candidate. Majority irukkum nu guarantee illa-na, last-la verify pannanum.","`Majority element` na `2/3`-la irukkura elements-a irukkum nu solluvaanga. `Boyer-Moore` algorithm-la ovvoru index-lum `count`-a check pannuvom, `count` positive-a irundha index-ku move pannuvom. `count` negative-a irunna, `-1`-a add pannuvom (negative count-oda index-ku). Ovvoru step-layum `count` `0` aanaadha index-la irundha, majority element-a kandupidikkum. Time `O(n)`, space `O(1)`. Idhu `majority window` problem-oda solution. `majority window size`-a kandukku `O(k)`-la solve pannalaam.",,,
+58,26,"<start_of_turn>user
+What is the difference between offset pagination and cursor pagination?
+
+Context:
+SELECT * FROM posts ORDER BY id LIMIT 10 OFFSET 20;
+SELECT * FROM posts WHERE id > 30 ORDER BY id LIMIT 10;<end_of_turn>
+<start_of_turn>model
+","`Offset pagination`-la `LIMIT` and `OFFSET` use pannuvom, `page 3` venum-na `OFFSET 20`. Simple, aana `OFFSET` periya-a aana database first 1 million rows-a skip panna kooda scan pannum, so slow. Rendavadhu, user page paarkkumbodhu pudhu rows insert aanaa duplicates or missing items varum. `Cursor pagination`-la last paartha item-oda `id` (cursor) vechi `WHERE id > 30` nu next page edukkuvom, index use aagum so romba fast, results-um stable. Aana random page-ku jump panna mudiyaadhu. Infinite scroll feeds-ku cursor, admin tables-ku offset.","`Offset pagination`-la ovvoru page-kum `LIMIT 10` rows kudukkum, ovvoru row-kum `id` vechi offset calculate panni, adha `OFFSET 20` nu thirumba thirumba thirudhu. Ungal query-la ovvora 20 rows thirudhu, ovvoruthu 30-ku thirudhu `O(n)`. `Cursor pagination`-layum ovvoru user-kum `WHERE id > 29` nu thirudhu nu `ORDER BY id` pannuvom, adha ovvoruthi row-kum thirudhu-ku thirumba thirudo, `O(log n)`. Cursor pagination-la ovvo rows-a memory-la hold panna mudiyum, so `1000` rows-ku `10` seconds-la dhaan work aagum. Offset pagination-ku `ORDER BY`",,,
+59,41,"<start_of_turn>user
+What is Exponential Search and when do you use it?<end_of_turn>
+<start_of_turn>model
+","`Exponential Search` oru sorted array-la, size theriyaadha or romba periya array-la target-a find panna use aagum. Mudhalla index `1, 2, 4, 8, 16...` nu double pannitte pogi, `arr[i] >= target` aagura range-a kandupidippom. Appuram andha range-kulla `Binary Search` pannuvom. Time `O(log n)`. Target array-oda start-ku kitta irundha `Binary Search`-a vida fast. Infinite or unbounded sorted data-la search panna idhu nalla option.","`Exponential Search` oru `binary search`-oda variant, `log n` steps-la search pannum. Oru number `n` times `n`-ku multiply pannuvom, adhu `n^log n` operations. Oru number-a `n` times multiply pannaa, `n`-la irundhu search pannuradhu, adhunaala `n^log n` operations-um, `n`-la irundhu search pannaa `O(n log n)` time-la panna mudiyum. employé-la `n` employees-ku `n^log n` employees-a kandupidikkum, so `O(n log n)` limit-la irundha dhaan use aagum. `Binary search`-la `log n` steps irukkum, so `n^log n` operations-ku exponential search better. `Binary search`-la `n`",,,
